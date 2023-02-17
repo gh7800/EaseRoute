@@ -6,9 +6,12 @@ import com.shineiot.libroute.IRouterLoad;
 
 import java.util.Map;
 
+/**
+ * @author GF63
+ */
 public class LoginRouter implements IRouterLoad {
     @Override
-    public void loadRoute(Map<String, Class<? extends Activity>> router) {
+    public void loadRouter(Map<String, Class<? extends Activity>> router) {
         //router.put("/login/login",LoginActivity.class);
     }
 }

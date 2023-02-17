@@ -1,11 +1,10 @@
 package com.shineiot.login;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import com.shineiot.route_complier.RouterAnnotation;
 
-import com.shineiot.libroute.Router;
-
+@RouterAnnotation(path = "/login/loginActivity")
 public class LoginActivity extends AppCompatActivity {
 
     @Override
@@ -13,6 +12,5 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        //Router.getInstance().startActivity();
     }
 }

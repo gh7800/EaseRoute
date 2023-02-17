@@ -16,3 +16,4 @@ rootProject.name = "EaseRouter"
 include ':app'
 include ':router-api'
 include ':login'
+include ':router-compiler'
