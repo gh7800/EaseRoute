@@ -1,4 +1,4 @@
-package com.shineiot.route_complier;
+package com.shineiot.routerannotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,4 +14,10 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE,ElementType.FIELD})
 public @interface RouterAnnotation {
     String path();
+    /**
+     * 将路由节点进行分组，可以实现动态加载
+     * @return
+     */
+    String group() default "";
+
 }

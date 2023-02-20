@@ -2,7 +2,8 @@ package com.shineiot.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.shineiot.route_complier.RouterAnnotation;
+
+import com.shineiot.routerannotation.RouterAnnotation;
 
 @RouterAnnotation(path = "/login/loginActivity")
 public class LoginActivity extends AppCompatActivity {

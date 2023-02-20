@@ -7,9 +7,9 @@ android {
     compileSdk 32
 
     defaultConfig {
-        //applicationId "com.shineiot.libroute"
         minSdk 21
         targetSdk 32
+
         versionCode 1
         versionName "1.0"
 
@@ -29,6 +29,8 @@ android {
 }
 
 dependencies {
+    api project(path: ':RouterAnnotation')
+    annotationProcessor project(path: ':RouterAnnotation')
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

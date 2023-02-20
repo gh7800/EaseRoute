@@ -10,6 +10,7 @@ public class MApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //Router.getInstance().loadRouterMap(this);
+        Router.getInstance().init(this);
+        Router.getInstance().printRouters();
     }
 }

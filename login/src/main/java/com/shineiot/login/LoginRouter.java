@@ -12,6 +12,6 @@ import java.util.Map;
 public class LoginRouter implements IRouterLoad {
     @Override
     public void loadRouter(Map<String, Class<? extends Activity>> router) {
-        //router.put("/login/login",LoginActivity.class);
+        router.put("/login/loginActivity",LoginActivity.class);
     }
 }
