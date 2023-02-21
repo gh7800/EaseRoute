@@ -1,20 +1,8 @@
-package com.shineiot.routerannotation;
+package com.shineiot.router_complier;
 
 import com.google.auto.service.AutoService;
-import com.shineiot.routerannotation.utils.Constant;
-import com.shineiot.routerannotation.utils.LogUtils;
-import com.shineiot.routerannotation.utils.Utils;
-import com.squareup.javapoet.ClassName;
-import com.squareup.javapoet.JavaFile;
-import com.squareup.javapoet.MethodSpec;
-import com.squareup.javapoet.ParameterSpec;
-import com.squareup.javapoet.ParameterizedTypeName;
-import com.squareup.javapoet.TypeSpec;
-import com.squareup.javapoet.WildcardTypeName;
+import com.shineiot.routerannotation.RouteMeta;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -27,33 +15,19 @@ import javax.annotation.processing.ProcessingEnvironment;
 import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
-import javax.annotation.processing.SupportedOptions;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.TypeMirror;
 import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
-import javax.tools.Diagnostic;
 
 
-//@SupportedAnnotationTypes("*")
-
-/**
- 处理器接收的参数 替代 {@link AbstractProcessor#getSupportedOptions()} 函数
- */
-@SupportedOptions(Constant.ARGUMENTS_NAME)
 /**
  * 指定使用的Java版本 替代 {@link AbstractProcessor#getSupportedSourceVersion()} 函数
  */
 @SupportedSourceVersion(SourceVersion.RELEASE_8)
-/**
- * 注册给哪些注解的  替代 {@link AbstractProcessor#getSupportedAnnotationTypes()} 函数
- */
-@SupportedAnnotationTypes(Constant.ANNOTATION_TYPE_ROUTE)
-
+//指定要处理的注解类
+@SupportedAnnotationTypes("com.shineiot.routerannotation.Router")
 @AutoService(Processor.class) //自动写入注解处理器，不需要手动在resources/META-INF/services下的文件写入
 public class RouterProcessor extends AbstractProcessor {
     /**
@@ -82,32 +56,26 @@ public class RouterProcessor extends AbstractProcessor {
 
     private LogUtils logUtil;
 
-    /*@Override
-    public Set<String> getSupportedAnnotationTypes() {
-        return Collections.singleton(RouterAnnotation.class.getCanonicalName());
-    }*/
-
     @Override
     public synchronized void init(ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
         logUtil = LogUtils.newLog(processingEnv.getMessager());
+        logUtil.i("process--init");
 
         elementUtils = processingEnv.getElementUtils();
         typeUtils = processingEnv.getTypeUtils();
         filerUtils = processingEnv.getFiler();
 
-        //参数是模块名 为了防止多模块/组件化开发的时候 生成相同的 xx$$ROOT$$文件
-        Map<String, String> options = processingEnv.getOptions();
-        if (!Utils.isEmpty(options)) {
-            moduleName = options.get("moduleName");
-        }
 
-        //logUtil.i(moduleName);
     }
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        if(!Utils.isEmpty(annotations)) {
+        logUtil.i("process--1");
+
+
+
+        /*if(!Utils.isEmpty(annotations)) {
             //被Route注解的节点集合
             Set<? extends Element> rootElements = roundEnv.getElementsAnnotatedWith(RouterAnnotation.class);
             //logUtil.i(rootElements.size() + "12344");
@@ -115,11 +83,11 @@ public class RouterProcessor extends AbstractProcessor {
                 processorRoute(rootElements);
             }
             return true;
-        }
+        }*/
 
-        return false;
+        return true;
     }
-
+/*
     private void processorRoute(Set<? extends Element> rootElements) {
         logUtil.i("123321");
 
@@ -152,12 +120,12 @@ public class RouterProcessor extends AbstractProcessor {
 
     }
 
-    /**
+    *//**
      * 生成Root类  作用：记录<分组，对应的Group类>
      *
      * @param iRouteRoot
      * @param iRouteGroup
-     */
+     *//*
     private void generatedRoot(TypeElement iRouteRoot, TypeElement iRouteGroup) {
         //创建参数类型 Map<String,Class<? extends IRouteGroup>> routes>
         //Wildcard 通配符
@@ -238,11 +206,11 @@ public class RouterProcessor extends AbstractProcessor {
         }
     }
 
-    /**
+    *//**
      * 检查是否配置 group 如果没有配置 则从path截取出组名
      *
      * @param routeMeta
-     */
+     *//*
     private void categories(RouteMeta routeMeta) {
         if (routeVerify(routeMeta)) {
             logUtil.i("Group : " + routeMeta.getGroup() + " path=" + routeMeta.getPath());
@@ -260,12 +228,12 @@ public class RouterProcessor extends AbstractProcessor {
         }
     }
 
-    /**
+    *//**
      * 验证path路由地址的合法性
      *
      * @param routeMeta
      * @return
-     */
+     *//*
     private boolean routeVerify(RouteMeta routeMeta) {
         String path = routeMeta.getPath();
         String group = routeMeta.getGroup();
@@ -283,5 +251,5 @@ public class RouterProcessor extends AbstractProcessor {
             routeMeta.setGroup(defaultGroup);
         }
         return true;
-    }
+    }*/
 }

@@ -8,6 +8,8 @@ java {
 }
 
 dependencies {
+    implementation project(path: ':router-annotation')
+
     //用于自动为 JAVA Processor 生成 META-INF 信息。
     implementation 'com.google.auto.service:auto-service:1.0'
     annotationProcessor 'com.google.auto.service:auto-service:1.0'

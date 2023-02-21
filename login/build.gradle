@@ -32,7 +32,7 @@ dependencies {
 
 
     implementation project(path: ':router-api')
-    annotationProcessor project(path: ':RouterAnnotation')
+    annotationProcessor project(path: ':router-complier')
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
     implementation 'com.google.android.material:material:1.5.0'
