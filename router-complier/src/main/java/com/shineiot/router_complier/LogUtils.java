@@ -15,6 +15,6 @@ public class LogUtils {
     }
 
     public void i(String msg) {
-        messager.printMessage(Diagnostic.Kind.NOTE, "----123----"+msg);
+        messager.printMessage(Diagnostic.Kind.NOTE, msg);
     }
 }
