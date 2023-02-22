@@ -1,9 +1,7 @@
 package com.shineiot.login;
 
 import android.app.Activity;
-
 import com.shineiot.libroute.IRouterLoad;
-
 import java.util.Map;
 
 /**

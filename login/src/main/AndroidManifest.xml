@@ -10,11 +10,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Login">
         <activity
+            android:name=".TestActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-<!-- 多个启动图标               <category android:name="android.intent.category.LAUNCHER" />-->
+                <!-- 多个启动图标               <category android:name="android.intent.category.LAUNCHER" /> -->
             </intent-filter>
 
             <meta-data
