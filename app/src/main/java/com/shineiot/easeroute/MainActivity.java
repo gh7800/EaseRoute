@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.textView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Router.getInstance().navigation("/login/loginActivity");
+                Router.getInstance().build("/login/loginActivity").navigation();
             }
         });
     }

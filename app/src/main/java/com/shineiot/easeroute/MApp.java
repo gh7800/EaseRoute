@@ -14,6 +14,5 @@ public class MApp extends Application {
         super.onCreate();
 
         Router.getInstance().init(this);
-        Router.getInstance().printRouters();
     }
 }

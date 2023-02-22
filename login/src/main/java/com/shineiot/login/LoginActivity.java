@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.shineiot.routerannotation.Router;
 
-@Router(path = "/loginActivity",group = "login")
+@Router(path = "/login/loginActivity")
 public class LoginActivity extends AppCompatActivity {
 
     @Override

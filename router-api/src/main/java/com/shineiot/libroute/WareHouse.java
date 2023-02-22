@@ -18,7 +18,7 @@ public class WareHouse {
     static LinkedHashMap<String, Class<? extends IRouterPath>> groupsIndex = new LinkedHashMap<>();
 
     // group 映射表 保存组中的所有数据
-    static Map<String, RouteMeta> routes = new HashMap<>();
+    static LinkedHashMap<String, RouteMeta> routes = new LinkedHashMap<>();
 
     // group 映射表 保存组中的所有数据
     static Map<Class, IService> services = new HashMap<>();

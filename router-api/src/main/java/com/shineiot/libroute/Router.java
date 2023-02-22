@@ -2,12 +2,21 @@ package com.shineiot.libroute;
 
 import android.app.Activity;
 import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 
+import androidx.core.app.ActivityCompat;
+
+import com.shineiot.libroute.callback.InterceptorCallback;
+import com.shineiot.libroute.callback.NavigationCallback;
 import com.shineiot.libroute.interfaces.IRouterGroup;
 import com.shineiot.libroute.interfaces.IRouterPath;
+import com.shineiot.routerannotation.RouteMeta;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -17,6 +26,7 @@ import java.util.Set;
 public class Router {
     private static volatile Router mInstance;
     private Application application;
+    private Handler mHandler;
 
     private static final String TAG = "EasyRouter";
     private static final String ROUTE_ROOT_PAKCAGE = "com.shineiot.router.routes";
@@ -26,6 +36,7 @@ public class Router {
     private static final String SUFFIX_INTERCEPTOR = "Interceptor";
 
     private Router() {
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     public static Router getInstance() {
@@ -59,23 +70,9 @@ public class Router {
             throw new RuntimeException(e);
         }
 
-        /*通过DexFile和反射 获取所有实现IRouterLoad的类*/
-
-        /*List<Class<IRouterLoad>> classList = ClassUtils.getAllClassByInterface(IRouterLoad.class, application.getPackageName());
-
-        for (Class<IRouterLoad> routerLoadClass : classList) {
-            Log.e("className", routerLoadClass.getName());
-            try {
-                Class<?> cls = Class.forName(routerLoadClass.getName());
-                IRouterLoad routerLoad = (IRouterLoad) cls.newInstance();
-                routerLoad.loadRouter(routers);
-            } catch (Exception e) {
-                Log.e("Exception", e.getMessage());
-            }
-        }*/
-
     }
 
+    //反射获取APT/POET生成的类
     private void loadInfo() throws PackageManager.NameNotFoundException, InterruptedException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         Set<String> routerMap  = ClassUtils.getFileNameByPackageName(this.application,ROUTE_ROOT_PAKCAGE);
         Log.e("set",routerMap.size()+"");
@@ -101,50 +98,177 @@ public class Router {
         Log.e("size",""+size);
     }
 
-    /**
-     * 导航
-     * @param path
-     */
-    public void navigation(String path) {
-        for(String key : WareHouse.groupsIndex.keySet()){
-            Class<? extends IRouterPath> routerPath = WareHouse.groupsIndex.get(key);
-            //routerPath.
+    protected Object navigation(final Context context, final Postcard postcard, final int requestCode, final NavigationCallback callback) {
+
+        /*if (callback != null) {
+            InterceptorImpl.onInterceptions(postcard, new InterceptorCallback() {
+                @Override
+                public void onNext(Postcard postcard) {
+                    _navigation(context, postcard, requestCode, callback);
+                }
+
+                @Override
+                public void onInterrupt(String interruptMsg) {
+
+                    callback.onInterrupt(new Throwable(interruptMsg));
+                }
+            });
+        }else{*/
+
+            return _navigation(context, postcard, requestCode, callback);
+        //}
+
+        //return null;
+    }
+
+    protected Object _navigation(final Context context, final Postcard postcard, final int requestCode, final NavigationCallback callback) {
+        try {
+            prepareCard(postcard);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //没找到
+            if (null != callback) {
+                callback.onLost(postcard);
+            }
+            return null;
+        }
+        if (null != callback) {
+            callback.onFound(postcard);
+        }
+
+        switch (postcard.getType()) {
+            case ACTIVITY:
+                final Context currentContext = null == context ? application : context;
+                final Intent intent = new Intent(currentContext, postcard.getDestination());
+                intent.putExtras(postcard.getExtras());
+                int flags = postcard.getFlags();
+                if (-1 != flags) {
+                    intent.setFlags(flags);
+                } else if (!(currentContext instanceof Activity)) {
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+                mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        //可能需要返回码
+                        if (requestCode > 0) {
+                            ActivityCompat.startActivityForResult((Activity) currentContext, intent,
+                                    requestCode, postcard.getOptionsBundle());
+                        } else {
+                            ActivityCompat.startActivity(currentContext, intent, postcard
+                                    .getOptionsBundle());
+                        }
+
+                        if ((0 != postcard.getEnterAnim() || 0 != postcard.getExitAnim()) &&
+                                currentContext instanceof Activity) {
+                            //老版本
+                            ((Activity) currentContext).overridePendingTransition(postcard
+                                            .getEnterAnim()
+                                    , postcard.getExitAnim());
+                        }
+                        //跳转完成
+                        if (null != callback) {
+                            callback.onArrival(postcard);
+                        }
+                    }
+                });
+                break;
+            case ISERVICE:
+                return postcard.getService();
+            default:
+                break;
+        }
+        return null;
+    }
+
+    public Postcard build(String path) {
+        if (TextUtils.isEmpty(path)) {
+            throw new RuntimeException("路由地址无效!");
+        } else {
+            return build(path, extractGroup(path));
         }
     }
 
-
     /**
-     * 路由表
-     * 保存，path/activity
-     */
-    private static Map<String, Class<? extends Activity>> routers = new HashMap<>();
-
-    public void printRouters(){
-        for(String key : WareHouse.routes.keySet()){
-            Class<?> cla = routers.get(key);
-            Log.e("",key+"----------"+cla.getName());
-        }
-    }
-
-    private void startActivity(String path) throws IllegalAccessException, InstantiationException {
-        Class<? extends Activity> cls = routers.get(path);
-
-        if (cls != null && Activity.class.isAssignableFrom(cls)) {
-            Intent intent = new Intent(application, cls);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            application.startActivity(intent);
-        }else {
-            throw new RuntimeException("找不到activity");
-        }
-    }
-
-    /**
-     * 注册
+     * 获得组别
      *
      * @param path
-     * @param activity
+     * @return
      */
-    public void register(String path, Class<? extends Activity> activity) {
-        routers.put(path, activity);
+    private String extractGroup(String path) {
+        if (TextUtils.isEmpty(path) || !path.startsWith("/")) {
+            throw new RuntimeException(path + " : 不能提取group.");
+        }
+        try {
+            String defaultGroup = path.substring(1, path.indexOf("/", 1));
+            if (TextUtils.isEmpty(defaultGroup)) {
+                throw new RuntimeException(path + " : 不能提取group.");
+            } else {
+                return defaultGroup;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
+
+    public Postcard build(String path, String group) {
+        if (TextUtils.isEmpty(path) || TextUtils.isEmpty(group)) {
+            throw new RuntimeException("路由地址无效!");
+        } else {
+            return new Postcard(path, group);
+        }
+    }
+
+    /**
+     * 准备卡片
+     *
+     * @param card
+     */
+    private void prepareCard(Postcard card) {
+        RouteMeta routeMeta = WareHouse.routes.get(card.getPath());
+        Log.e("----------",card.getPath()+"----------"+routeMeta);
+
+        if (null == routeMeta) {
+            Class<? extends IRouterPath> groupMeta = WareHouse.groupsIndex.get(card.getGroup());
+            if (null == groupMeta) {
+                //throw new NoRouteFoundException("没找到对应路由：分组=" + card.getGroup() + "   路径=" + card.getPath());
+                throw new RuntimeException("没找到对应路由：分组=" + card.getGroup() + "   路径=" + card.getPath());
+            }
+            IRouterPath iGroupInstance;
+            try {
+                iGroupInstance = groupMeta.getConstructor().newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException("路由分组映射表记录失败.", e);
+            }
+            iGroupInstance.cacheRouterMetaByPath(WareHouse.routes);
+
+            //已经准备过了就可以移除了 (不会一直存在内存中)
+            WareHouse.groupsIndex.remove(card.getGroup());
+            //再次进入 else
+            prepareCard(card);
+        } else {
+            //类 要跳转的activity 或IService实现类
+            card.setDestination(routeMeta.getDestination());
+            card.setType(routeMeta.getType());
+            switch (routeMeta.getType()) {
+                case ISERVICE:
+                    Class<?> destination = routeMeta.getDestination();
+                    IService service = WareHouse.services.get(destination);
+                    if (null == service) {
+                        try {
+                            service = (IService) destination.getConstructor().newInstance();
+                            WareHouse.services.put(destination, service);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    card.setService(service);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
 }
