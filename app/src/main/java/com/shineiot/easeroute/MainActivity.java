@@ -5,7 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-import com.shineiot.libroute.Router;
+import com.shineiot.libroute.EaseRouter;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.textView).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Router.getInstance().build("/login/loginActivity").navigation();
+                EaseRouter.getInstance().build("/login/loginActivity").navigation();
             }
         });
     }

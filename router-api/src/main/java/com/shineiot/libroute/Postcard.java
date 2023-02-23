@@ -10,6 +10,7 @@ import androidx.core.app.ActivityOptionsCompat;
 import com.shineiot.libroute.callback.NavigationCallback;
 import com.shineiot.routerannotation.RouteMeta;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Postcard extends RouteMeta {
@@ -147,6 +148,10 @@ public class Postcard extends RouteMeta {
         return this;
     }
 
+    public Postcard withSerializable(@Nullable String key, @Nullable Serializable value) {
+        mBundle.putSerializable(key, value);
+        return this;
+    }
 
     public Postcard withStringArray(@Nullable String key, @Nullable String[] value) {
         mBundle.putStringArray(key, value);
@@ -228,23 +233,23 @@ public class Postcard extends RouteMeta {
     }
 
     public Object navigation() {
-        return Router.getInstance().navigation(null, this, -1, null);
+        return EaseRouter.getInstance().navigation(null, this, -1, null);
     }
 
     public Object navigation(Context context) {
-        return Router.getInstance().navigation(context, this, -1, null);
+        return EaseRouter.getInstance().navigation(context, this, -1, null);
     }
 
 
     public Object navigation(Context context, NavigationCallback callback) {
-        return Router.getInstance().navigation(context, this, -1, callback);
+        return EaseRouter.getInstance().navigation(context, this, -1, callback);
     }
 
     public Object navigation(Context context, int requestCode) {
-        return Router.getInstance().navigation(context, this, requestCode, null);
+        return EaseRouter.getInstance().navigation(context, this, requestCode, null);
     }
 
     public Object navigation(Context context, int requestCode, NavigationCallback callback) {
-        return Router.getInstance().navigation(context, this, requestCode, callback);
+        return EaseRouter.getInstance().navigation(context, this, requestCode, callback);
     }
 }

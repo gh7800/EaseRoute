@@ -12,19 +12,17 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
-import com.shineiot.libroute.callback.InterceptorCallback;
 import com.shineiot.libroute.callback.NavigationCallback;
 import com.shineiot.libroute.interfaces.IRouterGroup;
 import com.shineiot.libroute.interfaces.IRouterPath;
 import com.shineiot.routerannotation.RouteMeta;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public class Router {
-    private static volatile Router mInstance;
+public class EaseRouter {
+    private static volatile EaseRouter mInstance;
     private Application application;
     private Handler mHandler;
 
@@ -35,15 +33,15 @@ public class Router {
     private static final String SUFFIX_ROOT = "Root";
     private static final String SUFFIX_INTERCEPTOR = "Interceptor";
 
-    private Router() {
+    private EaseRouter() {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
-    public static Router getInstance() {
+    public static EaseRouter getInstance() {
         if (mInstance == null) {
-            synchronized (Router.class) {
+            synchronized (EaseRouter.class) {
                 if (mInstance == null) {
-                    mInstance = new Router();
+                    mInstance = new EaseRouter();
                 }
             }
         }
@@ -227,7 +225,7 @@ public class Router {
      */
     private void prepareCard(Postcard card) {
         RouteMeta routeMeta = WareHouse.routes.get(card.getPath());
-        Log.e("----------",card.getPath()+"----------"+routeMeta);
+        //Log.e("----------",card.getPath()+"----------"+routeMeta);
 
         if (null == routeMeta) {
             Class<? extends IRouterPath> groupMeta = WareHouse.groupsIndex.get(card.getGroup());

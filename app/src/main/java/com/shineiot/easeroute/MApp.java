@@ -1,11 +1,8 @@
 package com.shineiot.easeroute;
 
 import android.app.Application;
-import android.content.pm.PackageManager;
 
-import com.shineiot.libroute.Router;
-
-import java.lang.reflect.InvocationTargetException;
+import com.shineiot.libroute.EaseRouter;
 
 public class MApp extends Application {
 
@@ -13,6 +10,6 @@ public class MApp extends Application {
     public void onCreate() {
         super.onCreate();
 
-        Router.getInstance().init(this);
+        EaseRouter.getInstance().init(this);
     }
 }

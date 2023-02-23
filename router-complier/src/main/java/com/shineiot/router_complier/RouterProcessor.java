@@ -194,6 +194,7 @@ public class RouterProcessor extends AbstractProcessor {
 
     /**
      * 生成 RouterPath 类
+     * 存放单个群组的所有 Path-RouteMeta
      */
     private void generateRouterPathByPoet(String groupName, List<RouteMeta> list, TypeElement typeElement) {
         //创建参数类型 Map<String, RouteMeta>
@@ -201,8 +202,10 @@ public class RouterProcessor extends AbstractProcessor {
                 ClassName.get(LinkedHashMap.class),
                 ClassName.get(String.class),
                 ClassName.get(RouteMeta.class));
+        //创建参数 atlas
         ParameterSpec altas = ParameterSpec.builder(parameterizedTypeName, "atlas").build();
 
+        //创建函数 Const.METHOD_LOAD_INTO
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(Const.METHOD_LOAD_INTO)
                 .addModifiers(Modifier.PUBLIC)
                 .addAnnotation(Override.class)
@@ -239,7 +242,8 @@ public class RouterProcessor extends AbstractProcessor {
     }
 
     /**
-     * 生成group类
+     * 生成root类
+     *  存放所有group的类信息
      */
     private void generaRouterGroupByPoet() {
         //创建参数类型 Map<String,Class<? extends IRouteGroup>> routes>
