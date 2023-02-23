@@ -5,6 +5,8 @@
 ### [借鉴 EasyRouter](https://github.com/Xiasm/EasyRouter)
 
 ### 组件化/模块化项目
+![](/Image/img_zujianhua.png)
+
 - app为壳module,login为模块，互不依赖(模块只需依赖router-api和注解 router-complier)
 - router-api 主要负责跳转导航API调用
 - route-complier 和 route-annotation必须是 ***java library*** 项目
