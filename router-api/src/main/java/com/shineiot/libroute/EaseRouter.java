@@ -48,12 +48,6 @@ public class EaseRouter {
         return mInstance;
     }
 
-
-    public boolean isPlugin = false;
-
-    public void loadRouterMap() {
-    }
-
     /**
      * 初始化
      *

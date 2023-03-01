@@ -137,23 +137,6 @@ public class RouterProcessor extends AbstractProcessor {
 
         generateClassByPoet(typeElement);
 
-        /*for(List<RouteMeta> data : routerMetaByGroup.values()){
-            for(RouteMeta routeMeta : data){
-                logUtil.i(routeMeta.getGroup());
-                logUtil.i(routeMeta.getPath());
-            }
-        }*/
-
-        /*if(!Utils.isEmpty(annotations)) {
-            //被Route注解的节点集合
-            Set<? extends Element> rootElements = roundEnv.getElementsAnnotatedWith(RouterAnnotation.class);
-            //logUtil.i(rootElements.size() + "12344");
-            if (!Utils.isEmpty(rootElements)) {
-                processorRoute(rootElements);
-            }
-            return true;
-        }*/
-
         return true;
     }
 
