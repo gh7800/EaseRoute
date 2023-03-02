@@ -31,7 +31,6 @@ public class EaseRouter {
     private static final String SDK_NAME = "EaseRouter";
     private static final String SEPARATOR = "_";
     private static final String SUFFIX_ROOT = "Root";
-    private static final String SUFFIX_INTERCEPTOR = "Interceptor";
 
     private EaseRouter() {
         mHandler = new Handler(Looper.getMainLooper());
@@ -64,53 +63,29 @@ public class EaseRouter {
 
     }
 
-    //反射获取APT/POET生成的类
     private void loadInfo() throws PackageManager.NameNotFoundException, InterruptedException, ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+
+        //反射获取APT/POET生成的类
         Set<String> routerMap  = ClassUtils.getFileNameByPackageName(this.application,ROUTE_ROOT_PAKCAGE);
-        Log.e("set",routerMap.size()+"");
 
         for (String className : routerMap) {
             if (className.startsWith(ROUTE_ROOT_PAKCAGE + "." + SDK_NAME + SEPARATOR + SUFFIX_ROOT)) {
-                Log.e("className",className);
-
                 //root中注册的是分组信息 将分组信息加入仓库中
                 ((IRouterGroup) Class.forName(className).getConstructor().newInstance()).cacheRouterPathByGroup(WareHouse.groupsIndex);
 
-            } /*else if (className.startsWith(ROUTE_ROOT_PAKCAGE + "." + SDK_NAME + SEPARATOR + SUFFIX_INTERCEPTOR)) {
-
-                ((IInterceptorGroup) Class.forName(className).getConstructor().newInstance()).loadInto(Warehouse.interceptorsIndex);
-            }*/
+            }
         }
 
         for (Map.Entry<String, Class<? extends IRouterPath>> stringClassEntry : WareHouse.groupsIndex.entrySet()) {
             Log.e(TAG, "Root映射表[ " + stringClassEntry.getKey() + " : " + stringClassEntry.getValue() + "]");
         }
 
-        int size = WareHouse.groupsIndex.size();
-        Log.e("size",""+size);
     }
 
     protected Object navigation(final Context context, final Postcard postcard, final int requestCode, final NavigationCallback callback) {
 
-        /*if (callback != null) {
-            InterceptorImpl.onInterceptions(postcard, new InterceptorCallback() {
-                @Override
-                public void onNext(Postcard postcard) {
-                    _navigation(context, postcard, requestCode, callback);
-                }
+        return _navigation(context, postcard, requestCode, callback);
 
-                @Override
-                public void onInterrupt(String interruptMsg) {
-
-                    callback.onInterrupt(new Throwable(interruptMsg));
-                }
-            });
-        }else{*/
-
-            return _navigation(context, postcard, requestCode, callback);
-        //}
-
-        //return null;
     }
 
     protected Object _navigation(final Context context, final Postcard postcard, final int requestCode, final NavigationCallback callback) {
@@ -147,20 +122,11 @@ public class EaseRouter {
                     public void run() {
                         //可能需要返回码
                         if (requestCode > 0) {
-                            ActivityCompat.startActivityForResult((Activity) currentContext, intent,
-                                    requestCode, postcard.getOptionsBundle());
+                            ActivityCompat.startActivityForResult((Activity) currentContext, intent, requestCode, postcard.getOptionsBundle());
                         } else {
-                            ActivityCompat.startActivity(currentContext, intent, postcard
-                                    .getOptionsBundle());
+                            ActivityCompat.startActivity(currentContext, intent, postcard.getOptionsBundle());
                         }
 
-                        if ((0 != postcard.getEnterAnim() || 0 != postcard.getExitAnim()) &&
-                                currentContext instanceof Activity) {
-                            //老版本
-                            ((Activity) currentContext).overridePendingTransition(postcard
-                                            .getEnterAnim()
-                                    , postcard.getExitAnim());
-                        }
                         //跳转完成
                         if (null != callback) {
                             callback.onArrival(postcard);

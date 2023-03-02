@@ -64,6 +64,7 @@ public class ClassUtils {
     public static Set<String> getFileNameByPackageName(Application context, final String packageName)
             throws PackageManager.NameNotFoundException, InterruptedException {
         final Set<String> classNames = new HashSet<>();
+
         List<String> paths = getSourcePaths(context);
         //使用同步计数器判断均处理完成
         final CountDownLatch countDownLatch = new CountDownLatch(paths.size());
