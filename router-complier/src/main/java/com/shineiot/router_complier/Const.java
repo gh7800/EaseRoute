@@ -2,7 +2,7 @@ package com.shineiot.router_complier;
 
 public class Const {
     public static final String ACTIVITY = "android.app.Activity";
-    public static final String ISERVICE = "android.app.Fragment";
+    public static final String ISERVICE = "androidx.fragment.app.Fragment";
     public static final String ARGUMENTS_NAME = "moduleName";
 
     public static final String METHOD_LOAD_INTO = "cacheRouterMetaByPath";

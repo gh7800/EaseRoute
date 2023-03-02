@@ -22,6 +22,7 @@ public class WareHouse {
 
     // group 映射表 保存组中的所有数据
     static Map<Class, IService> services = new HashMap<>();
+
     // TestServiceImpl.class , TestServiceImpl 没有再反射
 
     /**

@@ -115,7 +115,9 @@ public class EaseRouter {
 
     protected Object _navigation(final Context context, final Postcard postcard, final int requestCode, final NavigationCallback callback) {
         try {
-            prepareCard(postcard);
+
+            prepareCard(postcard);//准备明信片
+
         } catch (Exception e) {
             e.printStackTrace();
             //没找到
@@ -131,6 +133,7 @@ public class EaseRouter {
         switch (postcard.getType()) {
             case ACTIVITY:
                 final Context currentContext = null == context ? application : context;
+
                 final Intent intent = new Intent(currentContext, postcard.getDestination());
                 intent.putExtras(postcard.getExtras());
                 int flags = postcard.getFlags();
@@ -240,25 +243,24 @@ public class EaseRouter {
             //再次进入 else
             prepareCard(card);
         } else {
-            //类 要跳转的activity 或IService实现类
+            //类 要跳转的activity 或 IService实现类
             card.setDestination(routeMeta.getDestination());
             card.setType(routeMeta.getType());
-            switch (routeMeta.getType()) {
-                case ISERVICE:
-                    Class<?> destination = routeMeta.getDestination();
-                    IService service = WareHouse.services.get(destination);
-                    if (null == service) {
-                        try {
-                            service = (IService) destination.getConstructor().newInstance();
-                            WareHouse.services.put(destination, service);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+
+            if (routeMeta.getType() == RouteMeta.Type.ISERVICE) {
+                Class<?> destination = routeMeta.getDestination();
+                IService service = WareHouse.services.get(destination);
+                if (null == service) {
+                    try {
+                        service = (IService) destination.getConstructor().newInstance();
+
+                        WareHouse.services.put(destination, service);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Log.e("service-error",e.getMessage());
                     }
-                    card.setService(service);
-                    break;
-                default:
-                    break;
+                }
+                card.setService(service);
             }
         }
     }

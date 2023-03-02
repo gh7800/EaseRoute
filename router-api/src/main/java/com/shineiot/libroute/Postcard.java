@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.fragment.app.Fragment;
 
 import com.shineiot.libroute.callback.NavigationCallback;
 import com.shineiot.routerannotation.RouteMeta;
@@ -251,5 +252,13 @@ public class Postcard extends RouteMeta {
 
     public Object navigation(Context context, int requestCode, NavigationCallback callback) {
         return EaseRouter.getInstance().navigation(context, this, requestCode, callback);
+    }
+
+    public Fragment getFragment(){
+        try {
+            return (Fragment) this.getDestination().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
