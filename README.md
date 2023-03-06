@@ -5,6 +5,7 @@
 #### 在module中配置依赖最新版本号
 ```
 implementation 'com.github.gh7800:EaseRouter:xxx'
+annotationProcessor 'com.github.gh7800.EaseRouter:RouterComplier:xxx'
 
 //Activity和Fragment中使用
 @Router(path = "/login/loginActivity")

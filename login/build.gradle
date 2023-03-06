@@ -36,9 +36,11 @@ android {
 
 dependencies {
 
-    implementation project(path: ':router-api')
-//    implementation 'com.github.gh7800:EaseRouter:1.0.7'
-    annotationProcessor project(path: ':router-complier')
+//    implementation project(path: ':router-api')
+//    annotationProcessor project(path: ':router-complier')
+    implementation 'com.github.gh7800.EaseRouter:EaseRouter:1.0.8'
+    annotationProcessor 'com.github.gh7800.EaseRouter:RouterComplier:1.0.8'
+
 
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
