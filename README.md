@@ -4,7 +4,7 @@
 
 #### 在module中配置依赖最新版本号
 ```
-implementation 'com.github.gh7800:EaseRouter:xxx'
+implementation 'com.github.gh7800.EaseRouter:EaseRouter:1.0.8'
 annotationProcessor 'com.github.gh7800.EaseRouter:RouterComplier:xxx'
 
 //Activity和Fragment中使用
