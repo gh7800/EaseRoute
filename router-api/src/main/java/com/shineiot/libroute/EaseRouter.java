@@ -26,7 +26,7 @@ public class EaseRouter {
     private Application application;
     private Handler mHandler;
 
-    private static final String TAG = "EasyRouter";
+    private static final String TAG = "EaseRouter";
     private static final String ROUTE_ROOT_PAKCAGE = "com.shineiot.router.routes";
     private static final String SDK_NAME = "EaseRouter";
     private static final String SEPARATOR = "_";
@@ -58,6 +58,7 @@ public class EaseRouter {
         try {
             loadInfo();
         } catch (Exception e) {
+            Log.e("initLoadInfo",e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -75,6 +76,8 @@ public class EaseRouter {
 
             }
         }
+
+        Log.e("wH Size",WareHouse.groupsIndex.size()+"");
 
         for (Map.Entry<String, Class<? extends IRouterPath>> stringClassEntry : WareHouse.groupsIndex.entrySet()) {
             Log.e(TAG, "Root映射表[ " + stringClassEntry.getKey() + " : " + stringClassEntry.getValue() + "]");
@@ -188,7 +191,7 @@ public class EaseRouter {
      */
     private void prepareCard(Postcard card) {
         RouteMeta routeMeta = WareHouse.routes.get(card.getPath());
-        //Log.e("----------",card.getPath()+"----------"+routeMeta);
+        Log.e("----------",card.getPath()+"----------"+routeMeta);
 
         if (null == routeMeta) {
             Class<? extends IRouterPath> groupMeta = WareHouse.groupsIndex.get(card.getGroup());

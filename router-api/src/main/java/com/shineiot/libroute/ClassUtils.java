@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.shineiot.libroute.thread.DefaultPoolExecutor;
 
@@ -66,6 +67,7 @@ public class ClassUtils {
         final Set<String> classNames = new HashSet<>();
 
         List<String> paths = getSourcePaths(context);
+
         //使用同步计数器判断均处理完成
         final CountDownLatch countDownLatch = new CountDownLatch(paths.size());
         ThreadPoolExecutor threadPoolExecutor = DefaultPoolExecutor.newDefaultPoolExecutor(paths.size());
@@ -80,7 +82,9 @@ public class ClassUtils {
                         Enumeration<String> dexEntries = dexFile.entries();
                         while (dexEntries.hasMoreElements()) {
                             String className = dexEntries.nextElement();
+
                             if (!TextUtils.isEmpty(className) && className.startsWith(packageName)) {
+                                Log.e("cName",className);
                                 classNames.add(className);
                             }
                         }

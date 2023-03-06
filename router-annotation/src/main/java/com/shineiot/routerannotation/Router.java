@@ -12,7 +12,7 @@ public @interface Router {
      * 路由的路径
      * @return
      */
-    String path();
+    String path() default "";
 
     /**
      * 将路由节点进行分组，可以实现动态加载
