@@ -2,6 +2,11 @@
 
 ### [![](https://jitpack.io/v/gh7800/EaseRouter.svg)](https://jitpack.io/#gh7800/EaseRouter)
 
+##### 在module中配置依赖最新版本号
+```
+implementation 'com.github.gh7800:EaseRouter:xxx'
+```
+
 
 ### 组件化/模块化项目
 ### ![](/Image/img_zujianhua.png)

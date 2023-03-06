@@ -37,8 +37,8 @@ android {
 dependencies {
 
 
-    implementation project(path: ':router-api')
-//    implementation 'com.github.gh7800:EaseRouter:1.0.6'
+//    implementation project(path: ':router-api')
+    implementation 'com.github.gh7800:EaseRouter:1.0.7'
 
 
     implementation 'androidx.appcompat:appcompat:1.4.1'
