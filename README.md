@@ -2,9 +2,16 @@
 
 ### [![](https://jitpack.io/v/gh7800/EaseRouter.svg)](https://jitpack.io/#gh7800/EaseRouter)
 
-##### 在module中配置依赖最新版本号
+#### 在module中配置依赖最新版本号
 ```
 implementation 'com.github.gh7800:EaseRouter:xxx'
+
+//Activity和Fragment中使用
+@Router(path = "/login/loginActivity")
+public class LoginActivity extends AppCompatActivity {}
+
+//导航
+EaseRouter.getInstance().build("/login/loginActivity").navigation();
 ```
 
 
