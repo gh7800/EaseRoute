@@ -1,6 +1,6 @@
 ### EaseRouter 
 
-### ![](https://img.shields.io/badge/EaseRoute-1.0.0-brightgreen)
+### [![](https://jitpack.io/v/gh7800/EaseRouter.svg)](https://jitpack.io/#gh7800/EaseRouter)
 ### [中文博客](https://blog.csdn.net/qq_24000367/article/details/121511117)
 ### [借鉴 EasyRouter](https://github.com/Xiasm/EasyRouter)
 
