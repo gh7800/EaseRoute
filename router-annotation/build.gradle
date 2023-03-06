@@ -15,7 +15,7 @@ project.afterEvaluate {
                 //from components.release
                 groupId = 'com.github.7800'
                 artifactId = 'RouterAnnotation'
-                version = '1.0.4'
+                version = '1.0.5'
             }
         }
     }
